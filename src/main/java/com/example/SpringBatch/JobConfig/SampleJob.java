@@ -6,7 +6,7 @@ import com.example.SpringBatch.reader.FirstItemReader;
 import com.example.SpringBatch.Entity.Customer;
 import com.example.SpringBatch.ThirdTasklet;
 import com.example.SpringBatch.processor.FirstItemProcessor;
-import com.example.SpringBatch.reader.CSVItemReader;
+//import com.example.SpringBatch.reader.CSVItemReader;
 import com.example.SpringBatch.reader.FirstItemReader;
 import com.example.SpringBatch.writer.CsvItemWriter;
 import com.example.SpringBatch.writer.FirstItemWriter;
@@ -44,8 +44,8 @@ public class SampleJob {
     @Autowired
     public FirstItemReader firstItemReader;
 
-    @Autowired
-    public CSVItemReader csvItemReader;
+//    @Autowired
+//    public CSVItemReader csvItemReader;
     @Autowired
     public FirstItemProcessor firstItemProcessor;
     @Autowired
@@ -54,20 +54,21 @@ public class SampleJob {
     @Autowired
     public CsvItemWriter csvItemWriter;
 
-//    @Bean
-//    public Job firstJob() throws Exception {
-//        // You have added the spring batch dependency-
-//        // so as soon as you start your app, it first look for the method that return the Job.
-//        // and in our case we created one in JobConfig. thus this method get run.
-//        // it is same as when you add REST dependency, so any method
-//        // @ with get,post will get called fist as soon as you hit the request from web
-//        return jobBuilderFactory.get("first Job")
-//                .incrementer(new RunIdIncrementer())
-//                .start(firstStep())
-//                .next(secondStep())
-//                .next(thirdStep())
-//                .build();
-//    }
+/*    @Bean
+    public Job firstJob() throws Exception {
+        // You have added the spring batch dependency-
+        // so as soon as you start your app, it first look for the method that return the Job.
+        // and in our case we created one in JobConfig. thus this method get run.
+        // it is same as when you add REST dependency, so any method
+        // @ with get,post will get called fist as soon as you hit the request from web
+        return jobBuilderFactory.get("first Job")
+                .incrementer(new RunIdIncrementer())
+                .start(firstStep())
+                .next(secondStep())
+                .next(thirdStep())
+                .build();
+    }
+ */
 
     /*
     method: secondJob()
@@ -76,29 +77,18 @@ public class SampleJob {
      */
     @Bean
     public Job secondJob() throws Exception {
-        // You have added the spring batch dependency-
-        // so as soon as you start your app, it first look for the method that return the Job.
-        // and in our case we created one in JobConfig. thus this method get run.
-        // it is same as when you add REST dependency, so any method
-        // @ with get,post will get called fist as soon as you hit the request from web
+      /*   You have added the spring batch dependency-
+         so as soon as you start your app, it first look for the method that return the Job.
+         and in our case we created one in JobConfig. thus this method get run.
+         it is same as when you add REST dependency, so any method
+         @ with get,post will get called fist as soon as you hit the request from web
+       */
         return jobBuilderFactory.get("second Job")
                 .incrementer(new RunIdIncrementer())
                 .start(firstChunkStep())
                 .build();
     }
 
-//    @Bean
-//    public Job secondJob() throws Exception {
-//        // You have added the spring batch dependency-
-//        // so as soon as you start your app, it first look for the method that return the Job.
-//        // and in our case we created one in JobConfig. thus this method get run.
-//        // it is same as when you add REST dependency, so any method
-//        // @ with get,post will get called fist as soon as you hit the request from web
-//        return jobBuilderFactory.get("second Job")
-//                .incrementer(new RunIdIncrementer())
-//                .start(firstChunkStep())
-//                .build();
-//    }
 
     @Bean
     public Job job_readingCSV() throws Exception {

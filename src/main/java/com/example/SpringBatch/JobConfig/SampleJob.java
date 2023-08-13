@@ -1,17 +1,14 @@
 package com.example.SpringBatch.JobConfig;
 
-<<<<<<< Updated upstream
 import com.example.SpringBatch.ThirdTasklet;
 import com.example.SpringBatch.processor.FirstItemProcessor;
 import com.example.SpringBatch.reader.FirstItemReader;
-=======
 import com.example.SpringBatch.Entity.Customer;
 import com.example.SpringBatch.ThirdTasklet;
 import com.example.SpringBatch.processor.FirstItemProcessor;
 import com.example.SpringBatch.reader.CSVItemReader;
 import com.example.SpringBatch.reader.FirstItemReader;
 import com.example.SpringBatch.writer.CsvItemWriter;
->>>>>>> Stashed changes
 import com.example.SpringBatch.writer.FirstItemWriter;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -21,24 +18,17 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
-<<<<<<< Updated upstream
-import org.springframework.batch.item.ItemReader;
-=======
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.batch.item.file.mapping.DefaultLineMapper;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
->>>>>>> Stashed changes
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-<<<<<<< Updated upstream
-=======
 import org.springframework.core.io.FileSystemResource;
 
 import java.io.File;
->>>>>>> Stashed changes
 
 @Configuration
 public class SampleJob {
@@ -53,23 +43,17 @@ public class SampleJob {
 
     @Autowired
     public FirstItemReader firstItemReader;
-<<<<<<< Updated upstream
-=======
 
     @Autowired
     public CSVItemReader csvItemReader;
->>>>>>> Stashed changes
     @Autowired
     public FirstItemProcessor firstItemProcessor;
     @Autowired
     public FirstItemWriter firstItemWriter;
-<<<<<<< Updated upstream
-=======
 
     @Autowired
     public CsvItemWriter csvItemWriter;
 
->>>>>>> Stashed changes
 //    @Bean
 //    public Job firstJob() throws Exception {
 //        // You have added the spring batch dependency-
@@ -90,7 +74,6 @@ public class SampleJob {
     desc: it is another job i created, which used the chunk oriented steps.
 
      */
-<<<<<<< Updated upstream
     @Bean
     public Job secondJob() throws Exception {
         // You have added the spring batch dependency-
@@ -104,7 +87,6 @@ public class SampleJob {
                 .build();
     }
 
-=======
 //    @Bean
 //    public Job secondJob() throws Exception {
 //        // You have added the spring batch dependency-
@@ -129,37 +111,37 @@ public class SampleJob {
     private Step readCSVChunkStep() {
 
         // coding style- one way
-        csvItemReader.setResource(new FileSystemResource(new File("InputFiles/students.csv")));
-        DefaultLineMapper defaultLineMapper=new DefaultLineMapper<Customer>();
-        DelimitedLineTokenizer delimitedLineTokenizer=new DelimitedLineTokenizer();
-        delimitedLineTokenizer.setNames("ID","First Name","Last Name","Email");
-        defaultLineMapper.setLineTokenizer(delimitedLineTokenizer);
-        BeanWrapperFieldSetMapper beanWrapperFieldSetMapper=new BeanWrapperFieldSetMapper<Customer>();
-        beanWrapperFieldSetMapper.setTargetType(Customer.class);
-        defaultLineMapper.setFieldSetMapper(beanWrapperFieldSetMapper);
-        csvItemReader.setLineMapper(new DefaultLineMapper<Customer>());
-        csvItemReader.setLinesToSkip(1);
+//        csvItemReader.setResource(new FileSystemResource(new File("InputFiles/students.csv")));
+//        DefaultLineMapper defaultLineMapper=new DefaultLineMapper<Customer>();
+//        DelimitedLineTokenizer delimitedLineTokenizer=new DelimitedLineTokenizer();
+//        delimitedLineTokenizer.setNames("ID","First Name","Last Name","Email");
+//        defaultLineMapper.setLineTokenizer(delimitedLineTokenizer);
+//        BeanWrapperFieldSetMapper beanWrapperFieldSetMapper=new BeanWrapperFieldSetMapper<Customer>();
+//        beanWrapperFieldSetMapper.setTargetType(Customer.class);
+//        defaultLineMapper.setFieldSetMapper(beanWrapperFieldSetMapper);
+//        csvItemReader.setLineMapper(new DefaultLineMapper<Customer>());
+//        csvItemReader.setLinesToSkip(1);
 
         // coding style of above code in alternate way
-//        FlatFileItemReader<Customer> csvItemReader =
-//                new FlatFileItemReader<Customer>();
-//        csvItemReader.setResource(new FileSystemResource(
-//                new File("InputFiles/students.csv")));
-//        csvItemReader.setLineMapper(new DefaultLineMapper<Customer>() {
-//            {
-//                setLineTokenizer(new DelimitedLineTokenizer() {
-//                    {
-//                        setNames("ID", "First Name", "Last Name", "Email");
-//                    }
-//                });
-//                setFieldSetMapper(new BeanWrapperFieldSetMapper<Customer>() {
-//                    {
-//                        setTargetType(Customer.class);
-//                    }
-//                });
-//            }
-//        });
-//        csvItemReader.setLinesToSkip(1);
+        FlatFileItemReader<Customer> csvItemReader =
+                new FlatFileItemReader<Customer>();
+        csvItemReader.setResource(new FileSystemResource(
+                new File("InputFiles/students.csv")));
+        csvItemReader.setLineMapper(new DefaultLineMapper<Customer>() {
+            {
+                setLineTokenizer(new DelimitedLineTokenizer() {
+                    {
+                        setNames("ID", "First Name", "Last Name", "Email");
+                    }
+                });
+                setFieldSetMapper(new BeanWrapperFieldSetMapper<Customer>() {
+                    {
+                        setTargetType(Customer.class);
+                    }
+                });
+            }
+        });
+        csvItemReader.setLinesToSkip(1);
 
         return stepBuilderFactory.get("read csv step")
                 .<Customer,Customer>chunk(1)
@@ -169,8 +151,6 @@ public class SampleJob {
                 .build();
     }
 
-
->>>>>>> Stashed changes
     /*
     method: firstChunkStep
     desc: this method executed all the chunk oriented steps- reading, processing and writing the data.

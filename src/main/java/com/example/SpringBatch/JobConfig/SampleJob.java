@@ -1,5 +1,6 @@
 package com.example.SpringBatch.JobConfig;
 
+import com.example.SpringBatch.Entity.StudentJdbc;
 import com.example.SpringBatch.ThirdTasklet;
 import com.example.SpringBatch.processor.FirstItemProcessor;
 import com.example.SpringBatch.reader.FirstItemReader;
@@ -8,8 +9,10 @@ import com.example.SpringBatch.ThirdTasklet;
 import com.example.SpringBatch.processor.FirstItemProcessor;
 //import com.example.SpringBatch.reader.CSVItemReader;
 import com.example.SpringBatch.reader.FirstItemReader;
+import com.example.SpringBatch.reader.JDBCItemReader;
 import com.example.SpringBatch.writer.CsvItemWriter;
 import com.example.SpringBatch.writer.FirstItemWriter;
+import com.example.SpringBatch.writer.MyJdbcItemWriter;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
@@ -32,7 +35,7 @@ import java.io.File;
 
 @Configuration
 public class SampleJob {
-// For spring batch to undestand, do understand first the structure first. tasklet and chunk based steps are few examples.
+    // For spring batch to undestand, do understand first the structure first. tasklet and chunk based steps are few examples.
     @Autowired
     public JobBuilderFactory jobBuilderFactory;
     @Autowired
@@ -44,7 +47,7 @@ public class SampleJob {
     @Autowired
     public FirstItemReader firstItemReader;
 
-//    @Autowired
+    //    @Autowired
 //    public CSVItemReader csvItemReader;
     @Autowired
     public FirstItemProcessor firstItemProcessor;
@@ -53,6 +56,12 @@ public class SampleJob {
 
     @Autowired
     public CsvItemWriter csvItemWriter;
+
+    @Autowired
+    public JDBCItemReader jdbcItemReader;
+
+    @Autowired
+    public MyJdbcItemWriter myJdbcItemWriter;
 
 /*    @Bean
     public Job firstJob() throws Exception {
@@ -98,6 +107,16 @@ public class SampleJob {
                 .build();
     }
 
+
+    public Job databaseJob() throws Exception {
+        return jobBuilderFactory.get("db reading job")
+                .incrementer(new RunIdIncrementer())
+                .start(readDataFromDatabase())
+                .build();
+
+    }
+
+
     private Step readCSVChunkStep() {
 
         // coding style- one way
@@ -134,11 +153,23 @@ public class SampleJob {
         csvItemReader.setLinesToSkip(1);
 
         return stepBuilderFactory.get("read csv step")
-                .<Customer,Customer>chunk(1)
+                .<Customer, Customer>chunk(1)
                 .reader(csvItemReader)
 //                .processor(csvItemProcessor)
                 .writer(csvItemWriter)
                 .build();
+    }
+
+    private Step readDataFromDatabase() {
+
+        return stepBuilderFactory.get("first chunk of data from db")
+                .<StudentJdbc, StudentJdbc>chunk(3)
+                .reader(jdbcItemReader.getJdbcItemReader())
+//                .processor()
+                .writer(myJdbcItemWriter)
+                .build();
+
+
     }
 
     /*
@@ -149,7 +180,7 @@ public class SampleJob {
      */
     private Step firstChunkStep() {
         return stepBuilderFactory.get("first chunk step")
-                .<Integer,Long>chunk(3)
+                .<Integer, Long>chunk(3)
                 .reader(firstItemReader)
                 .processor(firstItemProcessor)
                 .writer(firstItemWriter)
